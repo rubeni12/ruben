@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 const String _baseUrl =
-    "http://192.168.254.78/BriphatMedia/ALL-PROJECTS/flutter_auth/pray";
+    "http://192.168.254.7/BriphatMedia/ALL-PROJECTS/flutter_auth/pray";
 const String _bookRoomEndpoint = '$_baseUrl/book_room.php';
 const String _addRoomEndpoint = '$_baseUrl/add_room.php';
 const String _getBookingsEndpoint = '$_baseUrl/get_bookings.php';
@@ -371,16 +371,16 @@ class _AdminPanelState extends State<AdminPanel> {
 
   // Function to pick image
   Future<void> getImage() async {
-   // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     //setState(() {
-     // if (pickedFile != null) {
-      //  _image = File(pickedFile.path);
-      //} else {
-      //  print('No image selected.');
-      }
+    // if (pickedFile != null) {
+    //  _image = File(pickedFile.path);
+    //} else {
+    //  print('No image selected.');
+  }
   //  });
- // }
+  // }
 
   @override
   Widget build(BuildContext context) {
