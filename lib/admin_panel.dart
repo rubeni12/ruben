@@ -4,12 +4,8 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const String _baseUrl =
-    "http://192.168.254.7/BriphatMedia/ALL-PROJECTS/flutter_auth/pray";
-const String _bookRoomEndpoint = '$_baseUrl/book_room.php';
-const String _addRoomEndpoint = '$_baseUrl/add_room.php';
-const String _getBookingsEndpoint = '$_baseUrl/get_bookings.php';
-const String _deleteBookingEndpoint = '$_baseUrl/delete_booking.php';
+import 'api.dart';
+
 
 class RoomListScreen extends StatefulWidget {
   const RoomListScreen({super.key});
@@ -194,7 +190,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
       try {
         var response = await http.post(
-          Uri.parse(_bookRoomEndpoint),
+          Uri.parse(Api.bookRoomEndpoint),
           body: bookingData,
         );
 
@@ -238,7 +234,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
   Future<void> _addRoom() async {
     if (_formKey.currentState!.validate()) {
-      var request = http.MultipartRequest('POST', Uri.parse(_addRoomEndpoint));
+      var request = http.MultipartRequest('POST', Uri.parse(Api.addRoomEndpoint));
       request.fields['room_number'] = roomNumberController.text;
       request.fields['room_type'] = roomTypeController.text;
       request.fields['price'] = priceController.text;
@@ -316,7 +312,7 @@ class _AdminPanelState extends State<AdminPanel> {
 
   Future<void> _getBookings() async {
     try {
-      final response = await http.get(Uri.parse(_getBookingsEndpoint));
+      final response = await http.get(Uri.parse(Api.getBookingsEndpoint));
 
       if (response.statusCode == 200) {
         final List<dynamic> data =
@@ -340,7 +336,7 @@ class _AdminPanelState extends State<AdminPanel> {
   Future<void> _deleteBooking(int bookingId) async {
     try {
       final response = await http.post(
-        Uri.parse(_deleteBookingEndpoint),
+        Uri.parse(Api.deleteBookingEndpoint),
         body: {'id': bookingId.toString()},
       );
 
