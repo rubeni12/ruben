@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ruben/roombooking.dart';
+import 'package:ruben/setting.dart';
+import 'package:ruben/userprofile.dart';
+import 'package:ruben/viewroom.dart';
+import 'package:ruben/welcome.dart';
 import 'admin_panel.dart';
 import 'change_password_dialog.dart';
 import 'chatpage.dart';
@@ -26,14 +31,30 @@ class Home extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context,
+                  MaterialPageRoute(builder: (context) => UserProfilePage()),);
+
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
+                Navigator.pop(context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),);
+              },
+            ),
+            // New "View Room" item before "Room Booking"
+            ListTile(
+              leading: const Icon(Icons.visibility),
+              title: const Text('View Room'),
+              onTap: () {
                 Navigator.pop(context);
+                // Navigate to the View Room screen (replace with your actual screen)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewRoomScreen()), // Update with your actual screen
+                );
               },
             ),
             ListTile(
@@ -43,7 +64,7 @@ class Home extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RoomListScreen()),
+                  MaterialPageRoute(builder: (context) => AddRoomScreen()),
                 );
               },
             ),
@@ -77,18 +98,50 @@ class Home extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const MyHomePage()),
-                  (Route<dynamic> route) => false,
+                      (Route<dynamic> route) => false,
                 );
               },
             ),
-            Image.asset('assets/images/image.png'),
+            Image.asset('assets/images/image.jpg'),
           ],
         ),
       ),
       body: SingleChildScrollView(
         child: Row(
           children: [
-            Image.asset('assets/images/image.png'),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Background Image
+                  Image.asset(
+                    'assets/images/house.jpg',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 600, // Adjust height as needed
+                  ),
+
+                  // Centered Text
+                  Text(
+                    'GET AFFORDABLE ROOMS FOR RENT',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreenAccent,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 10,
+                          color: Colors.black,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(width: 10),
           ],
         ),

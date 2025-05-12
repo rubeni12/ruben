@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'api.dart';
 import 'login.dart';
 
 // Moved User model class here
@@ -47,7 +48,7 @@ class _SignupPageState extends State<SignupPage> {
     try {
       var response = await http.post(
         Uri.parse(
-          "http://192.168.254.78/BriphatMedia/ALL-PROJECTS/flutter_auth/pray/signup.php",
+          Api.signup
         ),
         // Remove the headers, as we're sending form data, not JSON
         // headers: {"Content-Type": "application/json"},
@@ -57,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
       if (response.statusCode == 200) {
         var resBody = jsonDecode(response.body);
         if (resBody['success'] == true) {
-          print("Registered successfully");
+          print("Registered successfullyz");
 
           // Clear fields after successful registration
           setState(() {

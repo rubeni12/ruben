@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ruben/userprofile.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
+import 'api.dart'; // Assuming this contains Api.login
+// import 'home.dart'; // No longer navigating to Home
 import 'home.dart';
 import 'sign_up.dart';
 
-const String _baseUrl =
-    "http://192.168.254.78/BriphatMedia/ALL-PROJECTS/flutter_auth/pray"; // Replace with your server address
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -44,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         var response = await http.post(
-          Uri.parse('$_baseUrl/login.php'), // Use the login endpoint
+          Uri.parse(Api.login), // Use the login endpoint
           body: loginData,
         );
 
@@ -52,59 +54,15 @@ class _LoginPageState extends State<LoginPage> {
           var resBody = jsonDecode(response.body);
           if (resBody['success'] == true) {
             print("Logged in successfully");
-            // Navigate to the upload page
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            );
-          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(),));
+          }
+          else {
             // Show the error message from the server
             showDialog(
               context: context,
-              builder:
-                  (context) => AlertDialog(
-                    title: const Text('Login Failed'),
-                    content: Text(resBody['message'] ?? "Login failed"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
-            );
-            print("Login failed: ${resBody['message']}");
-          }
-        } else {
-          // Handle server errors
-          showDialog(
-            context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: const Text('Server Error'),
-                  content: const Text(
-                    'Failed to connect to the server. Please try again later.',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-          );
-          print("Server error: ${response.statusCode}");
-        }
-      } catch (e) {
-        // Catch network errors or other exceptions
-        showDialog(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('Error'),
-                content: const Text(
-                  'An error occurred. Please check your connection and try again.',
-                ),
+              builder: (context) => AlertDialog(
+                title: const Text('Login Failed'),
+                content: Text(resBody['message'] ?? "Login failed"),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -112,6 +70,45 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
+            );
+            print("Login failed: ${resBody['message']}");
+          }
+        } else {
+          // Handle server errors
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Server Error'),
+              content: Text(
+                'Failed to connect to the server. Status code: ${response.statusCode}. Please try again later.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Server error: ${response.statusCode}");
+          print("Response body: ${response.body}");
+        }
+      } catch (e) {
+        // Catch network errors or other exceptions
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+              'An error occurred: $e. Please check your connection and try again.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
         );
         print("Error: $e");
       }
@@ -234,9 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                const SignupPage(), // Use the SignupPage widget
+                        builder: (context) => const SignupPage(), // Use the SignupPage widget
                       ),
                     );
                   },
